@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/adatbazisok.iml" filepath="$PROJECT_DIR$/adatbazisok.iml" />
+      <module fileurl="file://$PROJECT_DIR$/elso_lemez/elso_lemez.iml" filepath="$PROJECT_DIR$/elso_lemez/elso_lemez.iml" />
+      <module fileurl="file://$PROJECT_DIR$/harmadik_paritas/harmadik_paritas.iml" filepath="$PROJECT_DIR$/harmadik_paritas/harmadik_paritas.iml" />
+      <module fileurl="file://$PROJECT_DIR$/masodik_paritas/masodik_paritas.iml" filepath="$PROJECT_DIR$/masodik_paritas/masodik_paritas.iml" />
+      <module fileurl="file://$PROJECT_DIR$/negyedik_olvasas/negyedik_olvasas.iml" filepath="$PROJECT_DIR$/negyedik_olvasas/negyedik_olvasas.iml" />
+    </modules>
+  </component>
+</project>
