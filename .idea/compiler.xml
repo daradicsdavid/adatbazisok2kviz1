@@ -9,12 +9,14 @@
         <module name="elso_lemez" />
         <module name="harmadik_paritas" />
         <module name="masodik_paritas" />
+        <module name="negyedik_olvasas" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="elso_lemez" target="1.5" />
       <module name="harmadik_paritas" target="1.8" />
       <module name="masodik_paritas" target="1.8" />
+      <module name="negyedik_olvasas" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>
