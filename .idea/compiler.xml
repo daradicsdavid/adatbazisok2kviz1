@@ -7,10 +7,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="elso_lemez" />
+        <module name="masodik_paritas" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="elso_lemez" target="1.5" />
+      <module name="masodik_paritas" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
