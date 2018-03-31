@@ -1,9 +1,12 @@
 package Application;
 
 import Input.Input;
+import org.apache.commons.text.StrSubstitutor;
 
-import java.util.ArrayList;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Application {
 
@@ -15,33 +18,31 @@ public class Application {
 
     private static void feladatMegoldas(List<String> bitSorozatok) {
         inputBitSorozatok = bitSorozatok;
+        Map<String, Character> szamitas = paritasSorozatSzamitas();
         System.out.println("A bitsorozatok:");
+        String template = "Az ${i}. sorozat: ${sorozat} paritásbit: ${paritásbit}.";
         for (int i = 0; i < inputBitSorozatok.size(); i++) {
-            System.out.println(i + ". sorozat:" + inputBitSorozatok.get(i));
+            Map<String, String> data = new HashMap<String, String>();
+            data.put("i", String.valueOf(i));
+            data.put("sorozat", inputBitSorozatok.get(i));
+            data.put("paritásbit", String.valueOf(szamitas.get(inputBitSorozatok.get(i))));
+            System.out.println(StrSubstitutor.replace(template, data));
         }
 
-        System.out.println("A bitsorozatok paritásbitsorozata:");
-        String paritasSorozat = paritasSorozatSzamitas();
-        System.out.println(paritasSorozat);
-
-        System.out.println("Ellenőrzés:");
-        inputBitSorozatok = new ArrayList<>(inputBitSorozatok);
-        inputBitSorozatok.add(paritasSorozat);
-        String ellenorzoParitasSorozat = paritasSorozatSzamitas();
-        System.out.println(ellenorzoParitasSorozat);
+        System.out.println("");
     }
 
-    private static String paritasSorozatSzamitas() {
-        List<Character> ellenorzoSorozatKarakterek = new ArrayList<>();
-        for (int i = 0; i < inputBitSorozatok.get(0).length(); i++) {
-            ellenorzoSorozatKarakterek.add(ellenorzoBitSzamolas(i));
+    private static Map<String, Character> paritasSorozatSzamitas() {
+
+        Map<String, Character> bitsorozatokParitasBitekkel = new HashMap<>();
+        for (String inputBitSorozat : inputBitSorozatok) {
+            bitsorozatokParitasBitekkel.put(inputBitSorozat, ellenorzoBitSzamolas(inputBitSorozat));
         }
-
-        return getStringRepresentation(ellenorzoSorozatKarakterek);
+        return bitsorozatokParitasBitekkel;
     }
 
-    private static Character ellenorzoBitSzamolas(int i) {
-        return inputBitSorozatok.stream().filter(s -> s.charAt(i) == '1').count() % 2 == 0 ? '0' : '1';
+    private static Character ellenorzoBitSzamolas(String bitSorozat) {
+        return bitSorozat.chars().filter(c -> c == '1').count() % 2 == 0 ? '0' : '1';
     }
 
     static String getStringRepresentation(List<Character> list) {

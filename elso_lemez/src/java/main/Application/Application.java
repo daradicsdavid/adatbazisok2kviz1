@@ -143,9 +143,6 @@ public class Application {
         System.out.println("");
     }
 
-    private static Double maximalisAtviteliIdoSzamolas() {
-        return maximalisKeresesiIdoSzamolas() + maximalisRotaciosKesesSzamolas() + atviteliIdoSzamolas();
-    }
 
     private static Double atviteliIdoSzamolas() {
         return (hezagPerBlokkFokbanSzamolas() + szektorPerBlokkFokbanSzamolas()) / teljesFordulatFokban * egyFordulatMsban();
