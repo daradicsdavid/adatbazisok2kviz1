@@ -7,7 +7,7 @@ import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Application {
+public class Elso {
 
     static Integer felulet;
     static Integer savPerFelulet;
@@ -25,7 +25,7 @@ public class Application {
     static Integer teljesFordulatFokban = 360;
 
     public static void main(String[] args) {
-        feladatMegoldas(Input.orai);
+        /*feladatMegoldas(Input.orai);*/
         feladatMegoldas(Input.feladatsor);
     }
 
@@ -96,8 +96,10 @@ public class Application {
         Double maximalisKeresesiIdo = maximalisKeresesiIdoSzamolas();
         System.out.println("Mekkora a maximális keresési idő?");
 
-        String template = "A maximális keresési idő: ${maximalisKeresesiIdo} ms.";
+        String template = "A maximális keresési idő: 1 + ${fejMozgasEgySavra} (fejmozgás egy sávra) * ${savPerFelulet} (sáv per felület) = ${maximalisKeresesiIdo} ms.";
         Map<String, String> data = new HashMap<String, String>();
+        data.put("fejMozgasEgySavra", String.valueOf(fejMozgasEgySavra));
+        data.put("savPerFelulet", String.valueOf(savPerFelulet));
         data.put("maximalisKeresesiIdo", String.valueOf(maximalisKeresesiIdo));
 
         System.out.println(StrSubstitutor.replace(template, data));
@@ -112,8 +114,9 @@ public class Application {
         Double maximalisRotaciosKeses = maximalisRotaciosKesesSzamolas();
         System.out.println("Mekkora a maximális rotációs késés?");
 
-        String template = "A maximális rotációs késés: ${maximalisRotaciosKeses} ms.";
+        String template = "A maximális rotációs késés: 60000 / ${lemezForgasiSebesseg} (RPM) = ${maximalisRotaciosKeses} ms.";
         Map<String, String> data = new HashMap<String, String>();
+        data.put("lemezForgasiSebesseg", String.valueOf(lemezForgasiSebesseg));
         data.put("maximalisRotaciosKeses", String.valueOf(maximalisRotaciosKeses));
 
         System.out.println(StrSubstitutor.replace(template, data));
@@ -134,13 +137,76 @@ public class Application {
         Map<String, String> data = new HashMap<String, String>();
         data.put("atviteliIdo", String.valueOf(atviteliIdo));
         data.put("szektorPerBlokk", String.valueOf(szektorPerBlokk));
+        data.put("teljesFordulatFokban", String.valueOf(teljesFordulatFokban));
+        data.put("lemezForgasiSebesseg", String.valueOf(lemezForgasiSebesseg));
+        data.put("hezagPerBlokk", String.valueOf(hezagPerBlokk));
+        data.put("szektorPerSav", String.valueOf(szektorPerSav));
+        data.put("hezagPerSavSzazalek", String.valueOf(hezagPerSavSzazalek));
+
 
         String template = "Ha egy blokk ${szektorPerBlokk} szektor méretű, mekkora egy blokk átviteli ideje?";
         System.out.println(StrSubstitutor.replace(template, data));
 
-        template = "Egy blokk átviteli ideje: ${atviteliIdo} ms.";
+        template = "Egy blokk átviteli ideje:" +
+                "((((((${hezagPerSavSzazalek} (hézag aránya sávban) / 100) * ${teljesFordulatFokban} fok) / ${szektorPerSav} (szektor sávonként)) * ${hezagPerBlokk} (hézag blokkonként)) \n " +
+                "+ (((((100 - ${hezagPerSavSzazalek} (hézag aránya sávban))) / 100) * ${teljesFordulatFokban} fok) / ${szektorPerSav} (szektor sávonként) * ${szektorPerBlokk} (szektor blokkonként))) \n" +
+                "/ ${teljesFordulatFokban} fok * (60000 / ${lemezForgasiSebesseg} (RPM))" +
+                "= ${atviteliIdo} ms.";
         System.out.println(StrSubstitutor.replace(template, data));
         System.out.println("");
+
+        template = "(${hezagPerBlokkFokbanSzamolas} (hezagok foka blokkban) + ${szektorPerBlokkFokbanSzamolas} (szektorok foka blokkban)) / 360 * ${egyFordulatMsban} (teljes fordulat ideje ms-ben) = ${atviteliIdo} (átviteli idő)";
+        data.put("hezagPerBlokkFokbanSzamolas", String.valueOf(hezagPerBlokkFokbanSzamolas()));
+        data.put("szektorPerBlokkFokbanSzamolas", String.valueOf(szektorPerBlokkFokbanSzamolas()));
+        data.put("szektorPerBlokkFokbanSzamolas", String.valueOf(szektorPerBlokkFokbanSzamolas()));
+        data.put("egyFordulatMsban", String.valueOf(egyFordulatMsban()));
+        data.put("atviteliIdo", String.valueOf(atviteliIdo));
+        System.out.println(StrSubstitutor.replace(template, data));
+        System.out.println("");
+
+        template = "${hezagPerSzektorFokbanSzamolas} (hézagok foka szektoronként) * ${hezagPerBlokk} (hézagok száma blokkonként) = ${hezagPerBlokkFokbanSzamolas} (hezagok foka blokkban)";
+        data.put("hezagPerSzektorFokbanSzamolas", String.valueOf(hezagPerSzektorFokbanSzamolas()));
+        data.put("hezagPerBlokk", String.valueOf(hezagPerBlokk));
+        data.put("hezagPerBlokkFokbanSzamolas", String.valueOf(hezagPerBlokkFokbanSzamolas()));
+        System.out.println(StrSubstitutor.replace(template, data));
+        System.out.println("");
+
+
+        template = "${hezagPerFordulatFokbanSzamolas} (hézagok foka sávonként) / ${szektorPerSav} (szektorok száma sávonként) = ${hezagPerSzektorFokbanSzamolas} (hezagok foka szektorban)";
+        data.put("hezagPerFordulatFokbanSzamolas", String.valueOf(hezagPerFordulatFokbanSzamolas()));
+        data.put("szektorPerSav", String.valueOf(szektorPerSav));
+        data.put("hezagPerSzektorFokbanSzamolas", String.valueOf(hezagPerSzektorFokbanSzamolas()));
+        System.out.println(StrSubstitutor.replace(template, data));
+        System.out.println("");
+
+        template = "${hezagPerSavSzazalek} (hézagok százaléka sávonként) / 100 * 360  = ${hezagPerFordulatFokbanSzamolas} (hezagok foka sávonként)";
+        data.put("hezagPerSavSzazalek", String.valueOf(hezagPerSavSzazalek));
+        data.put("hezagPerFordulatFokbanSzamolas", String.valueOf(hezagPerFordulatFokbanSzamolas()));
+        System.out.println(StrSubstitutor.replace(template, data));
+        System.out.println("");
+
+        template = "${szektorPerSzektorFokbanSzamolas} (szektorok foka szektoronként) * ${szektorPerBlokk} (szektorok száma blokkonként) = ${szektorPerBlokkFokbanSzamolas} (szektorok foka blokkban)";
+        data.put("szektorPerSzektorFokbanSzamolas", String.valueOf(szektorPerSzektorFokbanSzamolas()));
+        data.put("szektorPerBlokk", String.valueOf(szektorPerBlokk));
+        data.put("szektorPerBlokkFokbanSzamolas", String.valueOf(szektorPerBlokkFokbanSzamolas()));
+        System.out.println(StrSubstitutor.replace(template, data));
+        System.out.println("");
+
+        template = "${szektorPerFordulatFokbanSzamolas} (szektorok foka sávonként) / ${szektorPerBlokk} (szektorok száma sávonként) = ${szektorPerSzektorFokbanSzamolas} (szektorok foka szektorban)";
+        data.put("szektorPerFordulatFokbanSzamolas", String.valueOf(szektorPerFordulatFokbanSzamolas()));
+        data.put("szektorPerSav", String.valueOf(szektorPerSav));
+        data.put("szektorPerSzektorFokbanSzamolas", String.valueOf(szektorPerSzektorFokbanSzamolas()));
+        System.out.println(StrSubstitutor.replace(template, data));
+        System.out.println("");
+
+
+        template = "(100 - ${hezagPerSavSzazalek} (hézagok százaléka sávonként)) / 100 * 360= ${szektorPerFordulatFokbanSzamolas} (szektorok foka sávonként)";
+        data.put("hezagPerSavSzazalek", String.valueOf(hezagPerSavSzazalek));
+        data.put("szektorPerFordulatFokbanSzamolas", String.valueOf(szektorPerFordulatFokbanSzamolas()));
+        System.out.println(StrSubstitutor.replace(template, data));
+        System.out.println("");
+
+
     }
 
 
@@ -176,8 +242,10 @@ public class Application {
         Double atlagosKeresesiIdo = atlagosKeresesiIdoSzamolas();
         System.out.println("Mekkora az átlagos keresési idő?");
 
-        String template = "Az átlagos keresési idő: ${atlagosKeresesiIdo} ms.";
+        String template = "Az átlagos keresési idő: 1 + (${savPerFelulet} (sávok száma) / 3) / ${savMozgazPerMs} (fejmozgás fokban ms-ként)  = ${atlagosKeresesiIdo} ms.";
         Map<String, String> data = new HashMap<String, String>();
+        data.put("savPerFelulet", String.valueOf(savPerFelulet));
+        data.put("savMozgazPerMs", String.valueOf(savMozgazPerMs));
         data.put("atlagosKeresesiIdo", String.valueOf(atlagosKeresesiIdo));
 
         System.out.println(StrSubstitutor.replace(template, data));
@@ -193,8 +261,9 @@ public class Application {
         Double atlagosRotaciosKeses = atlagosRotaciosKesesSzamolas();
         System.out.println("Mekkora az átlagos rotációs késés?");
 
-        String template = "Az átlagos rotációs késés: ${atlagosRotaciosKeses} ms.";
+        String template = "Az átlagos rotációs késés:  60000 / ${lemezForgasiSebesseg} (RPM) / 2 = ${atlagosRotaciosKeses} ms.";
         Map<String, String> data = new HashMap<String, String>();
+        data.put("lemezForgasiSebesseg", String.valueOf(lemezForgasiSebesseg));
         data.put("atlagosRotaciosKeses", String.valueOf(atlagosRotaciosKeses));
 
         System.out.println(StrSubstitutor.replace(template, data));

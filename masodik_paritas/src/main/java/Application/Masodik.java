@@ -4,16 +4,20 @@ import Input.Input;
 import org.apache.commons.text.StrSubstitutor;
 
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Application {
+public class Masodik {
 
     private static List<String> inputBitSorozatok;
 
     public static void main(String[] args) {
-        feladatMegoldas(Input.feladatsor.inputBitSorozatok);
+
+
+        /*        feladatMegoldas(Input.feladatsor.inputBitSorozatok);*/
+        feladatMegoldas(Arrays.asList(""));
     }
 
     private static void feladatMegoldas(List<String> bitSorozatok) {

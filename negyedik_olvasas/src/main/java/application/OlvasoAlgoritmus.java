@@ -22,15 +22,21 @@ public abstract class OlvasoAlgoritmus {
 
     protected void kiiras(Map.Entry<Integer, Integer> next) {
         Double keresesiIdo = keresesiIdoBecslese(jelenlegiSav, next.getKey());
-        elteltIdo = elteltIdo + keresesiIdo + adatok.blokkBeolvasas;
         jelenlegiSav = next.getKey();
+        Double ujElteltIdo = elteltIdo + keresesiIdo + adatok.blokkBeolvasas;
 
-        String template = "Blokk sorszáma:${sorszam} , teljesítés ideje: ${ido}";
+        String template = "Eddig eltelt idő:${elteltIdo}, jelenlegi blokk: ${jelenlegiSav} kovektkező blokk:${sorszam} , " +
+                "teljesítés ideje: ${elteltIdo} (eltelt idő) + ${keresesiIdo} (keresési idő) + ${bblokkBeolvasas} (blokk beolvasás) = ${ido}";
         Map<String, String> data = new HashMap<String, String>();
+        data.put("elteltIdo", String.valueOf(elteltIdo));
+        data.put("jelenlegiSav", String.valueOf(jelenlegiSav));
         data.put("sorszam", String.valueOf(next.getKey()));
-        data.put("ido", String.valueOf(elteltIdo));
+        data.put("keresesiIdo", String.valueOf(keresesiIdo));
+        data.put("bblokkBeolvasas", String.valueOf(adatok.blokkBeolvasas));
+        data.put("ido", String.valueOf(ujElteltIdo));
         System.out.println(StrSubstitutor.replace(template, data));
 
+        elteltIdo = ujElteltIdo;
         deleteItem(next);
     }
 

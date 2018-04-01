@@ -4,18 +4,17 @@ package Application;
 import Application.input.Input;
 import org.apache.commons.text.StrSubstitutor;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.IntStream;
 
-public class Application {
+public class Harmadik {
 
     private static List<String> inputBitSorozatok;
 
     public static void main(String[] args) {
-        feladatMegoldas(Input.feladatsor.inputBitSorozatok);
+
+        /* feladatMegoldas(Input.feladatsor.inputBitSorozatok);*/
+        feladatMegoldas(Arrays.asList("10101101"));
     }
 
     private static void feladatMegoldas(List<String> bitSorozatok) {
